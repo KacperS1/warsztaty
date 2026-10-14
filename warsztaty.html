@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Warsztaty</title>
+</head>
+<body>
+
+    <h2>Formularz na warsztaty informatyczne</h2>
+
+    <form id="formularzZgloszenia">
+        <label for="imieNazwisko">Imię i nazwisko:</label>
+        <input type="text" id="imieNazwisko" name="imieNazwisko">
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email">
+
+        <label for="warsztat">Wybierz warsztat:</label>
+        <select id="warsztat" name="warsztat">
+            <option value="">-- Wybierz warsztat --</option>
+            <option value="Tworzenie stron www">Tworzenie stron www</option>
+            <option value="Java Script">Java Script</option>
+            <option value="Bazy danych SQL">Bazy danych SQL</option>
+        </select>
+
+        <fieldset>
+            <legend>Poziom zaawansowania</legend>
+            <input type="radio" id="poziomPoczatkujacy" name="poziom" value="Początkujący">
+            <label for="poziomPoczatkujacy">Początkujący</label><br>
+            <input type="radio" id="poziomSredni" name="poziom" value="Średnio zaawansowany">
+            <label for="poziomSredni">Średnio zaawansowany</label><br>
+            <input type="radio" id="poziomZaawansowany" name="poziom" value="Zaawansowany">
+            <label for="poziomZaawansowany">Zaawansowany</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Zainteresowania</legend>
+            <input type="checkbox" id="zainteresowaniaWeb" name="zainteresowania" value="Web Design">
+            <label for="zainteresowaniaWeb">Web Design</label><br>
+            <input type="checkbox" id="zainteresowaniaAI" name="zainteresowania" value="Sztuczna Inteligencja">
+            <label for="zainteresowaniaAI">Sztuczna Inteligencja</label><br>
+            <input type="checkbox" id="zainteresowaniaGry" name="zainteresowania" value="Tworzenie Gier">
+            <label for="zainteresowaniaGry">Tworzenie Gier</label>
+        </fieldset>
+
+        <label>
+            <input type="checkbox" id="zgoda" name="zgoda">
+            Wyrażam zgodę na regulamin warsztatów
+        </label>
+
+        <button type="submit">Sprawdź zgłoszenie</button>
+    </form>
+
+    <div id="wynik"></div>
+
+    <script>
+        const formularz = document.getElementById("formularzZgloszenia");
+
+        formularz.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const imie = document.getElementById("imieNazwisko").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const warsztat = document.getElementById("warsztat").value;
+            const poziom = document.querySelector('input[name="poziom"]:checked');
+            const zgoda = document.getElementById("zgoda").checked;
+            const wynik = document.getElementById("wynik");
+            const checkboxy = document.querySelectorAll('input[name="zainteresowania"]');
+            let zainteresowania = "";
+
+            for (let i = 0; i < checkboxy.length; i++) {
+                if (checkboxy[i].checked) {
+                    zainteresowania += checkboxy[i].value + ", ";
+                }
+            }
+
+            if (zainteresowania !== "") {
+                zainteresowania = zainteresowania.slice(0, -2);
+            } else {
+                zainteresowania = "Brak";
+            }
+
+            if (imie === "") {
+                wynik.textContent = "Podaj imię i nazwisko.";
+                return;
+            }
+            if (email === "") {
+                wynik.textContent = "Podaj e-mail.";
+                return;
+            }
+            if (warsztat === "") {
+                wynik.textContent = "Wybierz warsztat z listy.";
+                return;
+            }
+            if (!poziom) {
+                wynik.textContent = "Wybierz poziom zaawansowania.";
+                return;
+            }
+            if (!zgoda) {
+                wynik.textContent = "Musisz zaznaczyć zgodę na regulamin.";
+                return;
+            }
+
+            wynik.textContent = "Imię i nazwisko: " + imie + "\n" +
+                                "E-mail: " + email + "\n" +
+                                "Warsztat: " + warsztat + "\n" +
+                                "Poziom: " + poziom.value + "\n" +
+                                "Zainteresowania: " + zainteresowania;
+        });
+    </script>
+</body>
+</html>
